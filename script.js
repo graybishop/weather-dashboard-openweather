@@ -10,8 +10,6 @@ let openWeatherResponse = {};
 const searchFromForm = (event) => {
     event.preventDefault();
     let city = searchEl.val().trim();
-    addToListEl(listEl, city);
-    citiesArr.unshift(city);
     event.target.reset();
     findCityWeather(city);
 
@@ -27,48 +25,69 @@ const findCityWeather = (city) => {
 
     //fetch from first api lat and log
 
-    let lon = `coord.lon`;
     let lat = `coord.lat`;
-
+    let lon = `coord.lon`;
     let cityFinderURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openWeatherKEY}`;
     let weatherURL = ``;
 
     //fetch from second api call the weather
 
+
     fetch(cityFinderURL)
         .then(response => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
             return response.json();
         })
         .then(data => {
+            //if city is found, add to list and object. 
+            addToListEl(listEl, city);
+            citiesArr.unshift(city);
             lon = data.coord.lon;
             lat = data.coord.lat;
             weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${openWeatherKEY}`;
             return weatherURL;
         })
         .then(url => fetch(url)
-            .then(response => openWeatherResponse = response)
+            .then(response => updateWeatherResponse(response))
+        )
+        .catch(error => {
+            console.log(`Ran into an issue. Probably a bad city name`);
+            console.log(error);
+        }
         );
 
-    // store api response as a global object
-    //api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
-    //coord.lon City geo location, longitude
-    //coord.lat City geo location, latitude
-    //https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams ??
-
-    //https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-
-    //pulls HTMLFormElement out of jQuery object, then resets it.
 
 };
 
+const updateWeatherResponse = (weather) => {
+    openWeatherResponse = weather;
+    console.log(openWeatherResponse);
+    updatePage();
+};
+
+const updatePage = () => {
+
+};
 
 const addToListEl = (list, cityName) => {
+
+    //keeps the list to 7 or fewer elements.
+    if (list.children().length > 6) {
+        list.children().last().remove();
+        citiesArr.pop()
+    }
+
     let newLiEl = $('<li>')
         .addClass('list-group-item')
         .text(cityName)
         .data(`city`, cityName);
 
     list.prepend(newLiEl);
+
+    console.log(citiesArr)
+    
 };
 
 const clearList = (list) => {
