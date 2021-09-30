@@ -4,11 +4,13 @@ let listEl = $('#listPrev');
 let forecastHolderEl = $('#forecast-holder');
 const openWeatherKEY = `b182fedd8a80e5e98d46adb5bb99784e`;
 
-const citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`, `PORTLAND`, `NEW YORK`];
+//starting city list for new instances
+let citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`, `PORTLAND`, `NEW YORK`];
 
 let openWeatherResponse = {};
 let currentCitySearch = ``
 
+//triggered when user submits a city name 
 const searchFromForm = (event) => {
     event.preventDefault();
     let city = searchEl.val().trim().toUpperCase();
@@ -17,11 +19,13 @@ const searchFromForm = (event) => {
 
 };
 
+//triggered when user clicks on city in list. 
 const searchFromList = (event) => {
     let city = $(event.target).data('city');
     findCityWeather(city);
 };
 
+//finds city coords then passes them to weather API for data. 
 const findCityWeather = (city) => {
     //fetch from first api lat and log
     let lat = `coord.lat`;
@@ -45,6 +49,7 @@ const findCityWeather = (city) => {
                 citiesArr.push(city);
                 clearChildren(listEl)
                 generateList(listEl, city);
+                storeData(citiesArr)
             }
             currentCitySearch = city
             lon = data.coord.lon;
@@ -56,6 +61,7 @@ const findCityWeather = (city) => {
             .then(response => response.json())
             .then(data => updateWeatherResponse(data))
         )
+        //stops chain if the city is not found/ bad api request
         .catch(error => {
             console.log(`Ran into an issue. Probably a bad city name`, error);
         }
@@ -70,13 +76,14 @@ const updateWeatherResponse = (weather) => {
     updatePage(weather);
 };
 
+//updates page elements
 const updatePage = (w) => {
-
+    //updates hero card when fed weather data
     const updateHeroCard = () => {
         let hero = $(`#hero-card`)
         let today = new Date(w.current.dt * 1000)
 
-        //sets titile text
+        //sets title text
         hero.children().eq(0).text(`${today.getMonth()+1}/${today.getDate()} in ${currentCitySearch}`)
 
         //sub items container
@@ -119,22 +126,8 @@ const updatePage = (w) => {
         subItemsEl.children().eq(4).text(`The humidity is ${w.current.humidity}%.`)
     }
 
-
+    //renders a forecast card when fed weather data.
     const renderForecastCard = (date,weather, temp, windSpeed, humidity, icon) => {
-        // <div class="col-sm">
-        //         <div class="card my-3 text-dark">
-        //             <div class="card-body">
-        //                 <h2 class="card-title text-dark">daily.dt</h2>
-        //                 <div class="d-flex flex-column">
-        //                     <p>daily.weather</p>
-        //                     <p>daily.temp.max</p>
-        //                     <p>daily.wind.speed</p>
-        //                     <p>daily.humidity</p>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
-
         let weatherArr =[weather, temp, windSpeed, humidity]
         
         //date string
@@ -181,9 +174,9 @@ const updatePage = (w) => {
     updateHeroCard()
 };
 
+//generates recent searches list
 const generateList = (list) => {
-
-    //keeps list to 5 elements
+    //keeps list to 6 elements
     if (citiesArr.length > 7) {
         citiesArr.shift()
     }
@@ -196,9 +189,9 @@ const generateList = (list) => {
 
         list.prepend(newLiEl);
     }
-    
 };
 
+//helper function to clear children of given element
 const clearChildren = (element) => {
     let children = element.children();
     for (const child of children) {
@@ -210,7 +203,26 @@ const init = () => {
     clearChildren(listEl);
     generateList(listEl);
     findCityWeather(`ORLANDO`)
+    retrieveData()
 };
+
+const retrieveData = () => {
+    let localData = window.localStorage.getItem(`recentCities`)
+
+    
+    if (localData) {
+        console.log('dataFound')
+        citiesArr = JSON.parse(localData)
+    } else{
+        console.log('data not Found')
+        storeData(citiesArr)
+        
+    }
+}
+
+const storeData = (arr) => {
+    localStorage.setItem(`recentCities`, JSON.stringify(arr))
+}
 
 init();
 // binding event listener
