@@ -42,9 +42,9 @@ const findCityWeather = (city) => {
             //if city is found, add to list and object, if not duplicate
             if(!citiesArr.includes(city)){
                 citiesArr.push(city);
+                clearChildren(listEl)
+                generateList(listEl, city);
             }
-            clearChildren(listEl)
-            generateList(listEl, city);
             currentCitySearch = city
             lon = data.coord.lon;
             lat = data.coord.lat;
@@ -118,10 +118,9 @@ const updatePage = (w) => {
 
 const generateList = (list) => {
 
-    //keeps the list to 7 or fewer elements.
-    if (list.children().length > 6) {
-        list.children().last().remove();
-        citiesArr.pop()
+    //keeps list to 5 elements
+    if (citiesArr.length > 5) {
+        citiesArr.shift()
     }
 
     for (const city of citiesArr) {
