@@ -14,12 +14,12 @@
     <title>Weather Dashboard!</title>
 </head>
 
-<body>
-    <header class="container d-flex justify-content-center bg-dark text-light">
+<body class="bg-dark">
+    <header class="container d-flex justify-content-center bg-dark text-light my-3">
         <h1>Weather Dashboard</h1>
     </header>
-    <main class="container bg-dark text-light my-3">
-        <section class="row">
+    <main class="container bg-light text-dark my-3">
+        <section class="row bg-dark text-light">
             <div class="col-sm-6">
                 <form class="my-3" id='search-form'>
                     <div class="mb-3">
@@ -31,34 +31,29 @@
                     </div>
                 </form>
                 <ul class="list-group my-3" id='listPrev'>
-                    <li class="list-group-item">PlaceHolder City</li>
-                    <li class="list-group-item">A second item</li>
-                    <li class="list-group-item">A third item</li>
-                    <li class="list-group-item">A fourth item</li>
-                    <li class="list-group-item">And a fifth one</li>
                 </ul>
             </div>
             <div class="col-sm-6">
                 <div class="card my-3 text-dark">
-                    <div class="card-body">
-                        <h2 class="card-title text-dark">Current Weather</h2>
+                    <div class="card-body" id='hero-card'>
+                        <h3 class="card-title text-dark">12/12 in Orlando</h3>
                         <div class="d-flex flex-column">
-                            <p class="fs-4">WEATHER ICON</p>
-                            <p class="fs-4">It is currently 99℉, and it feels like 100℉</p>
-                            <p class="fs-4">The present weather is: Snow</p>
-                            <p class="fs-4">Sunset takes place at 00:00, sunrise at 00:00</p>
-                            <p class="fs-4">The humidity is 00%, and the atmospheric pressure is 00hPA</p>
+                            <div><img src="http://openweathermap.org/img/wn/01d@2x.png"></div>
+                            <p class="fs-5">It is currently 99℉, and it feels like 100℉</p>
+                            <p class="fs-5">The wind speed is 99MPH</p>
+                            <p class="fs-5">the UV index is .99(favorable, moderate, or severe)</p>
+                            <p class="fs-5">The humidity is 00%, and the atmospheric pressure is 00hPA</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="row my-3">
+        <section class="row my-3 ">
             <div class='col bg-light text-dark'>
                 <h2>4 Day Forecast</h2>
             </div>
         </section>
-        <section class="row">
+        <section class="row bg-dark text-light">
             <div class="col-sm">
                 <div class="card my-3 text-dark">
                     <div class="card-body">
@@ -66,7 +61,7 @@
                         <div class="d-flex flex-column">
                             <p>daily.weather</p>
                             <p>daily.temp.max</p>
-                            <p>daily.temp.min</p>
+                            <p>daily.wind.speed</p>
                             <p>daily.humidity</p>
                         </div>
                     </div>

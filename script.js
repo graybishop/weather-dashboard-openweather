@@ -6,6 +6,7 @@ const openWeatherKEY = `b182fedd8a80e5e98d46adb5bb99784e`;
 const citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`];
 
 let openWeatherResponse = {};
+let currentCitySearch = ``
 
 const searchFromForm = (event) => {
     event.preventDefault();
@@ -42,16 +43,17 @@ const findCityWeather = (city) => {
             if(!citiesArr.includes(city)){
                 citiesArr.push(city);
             }
-            clearList(listEl)
+            clearChildren(listEl)
             generateList(listEl, city);
-            
+            currentCitySearch = city
             lon = data.coord.lon;
             lat = data.coord.lat;
-            weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${openWeatherKEY}`;
+            weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${openWeatherKEY}`;
             return weatherURL;
         })
         .then(url => fetch(url)
-            .then(response => updateWeatherResponse(response))
+            .then(response => response.json())
+            .then(data => updateWeatherResponse(data))
         )
         .catch(error => {
             console.log(`Ran into an issue. Probably a bad city name`, error);
@@ -63,11 +65,29 @@ const findCityWeather = (city) => {
 
 const updateWeatherResponse = (weather) => {
     openWeatherResponse = weather;
-    updatePage();
+    console.log(weather)
+    updatePage(weather);
 };
 
-const updatePage = () => {
+const updatePage = (w) => {
 
+    const updateHeroCard = () => {
+        let hero = $(`#hero-card`)
+        let today = new Date(w.current.dt * 1000)
+
+        hero.children().eq(0).text(`${today.getMonth()+1}/${today.getDate()} in ${currentCitySearch}`)
+
+        let subItemsEl = hero.children().eq(1)
+
+        let newImgEl = $('<img>')
+        .attr("src", `http://openweathermap.org/img/wn/${w.current.weather[0].icon}@2x.png`)
+        //Weather icon
+        clearChildren(subItemsEl.children().eq(0))
+        subItemsEl.children().eq(0).append(newImgEl)
+        subItemsEl.children().eq(1).text(`It is currently ${w.current.temp}℉, and it feels like ${w.current.feels_like}℉`)
+    }
+
+    updateHeroCard()
 };
 
 const generateList = (list) => {
@@ -89,17 +109,17 @@ const generateList = (list) => {
     
 };
 
-const clearList = (list) => {
-    let children = list.children();
+const clearChildren = (element) => {
+    let children = element.children();
     for (const child of children) {
         child.remove();
     }
 };
 
 const init = () => {
-    clearList(listEl);
+    clearChildren(listEl);
     generateList(listEl);
-    
+    findCityWeather(`ORLANDO`)
 };
 
 init();
