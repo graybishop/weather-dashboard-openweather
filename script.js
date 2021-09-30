@@ -3,13 +3,13 @@ let searchEl = $('#citySearch');
 let listEl = $('#listPrev');
 const openWeatherKEY = `b182fedd8a80e5e98d46adb5bb99784e`;
 
-const citiesArr = [`San Diego`, `Miami`, `Los Angeles`, `Orlando`, `Las Vegas`];
+const citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`];
 
 let openWeatherResponse = {};
 
 const searchFromForm = (event) => {
     event.preventDefault();
-    let city = searchEl.val().trim();
+    let city = searchEl.val().trim().toUpperCase();
     event.target.reset();
     findCityWeather(city);
 
@@ -21,10 +21,7 @@ const searchFromList = (event) => {
 };
 
 const findCityWeather = (city) => {
-    console.log(city);
-
     //fetch from first api lat and log
-
     let lat = `coord.lat`;
     let lon = `coord.lon`;
     let cityFinderURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openWeatherKEY}`;
@@ -41,9 +38,13 @@ const findCityWeather = (city) => {
             return response.json();
         })
         .then(data => {
-            //if city is found, add to list and object. 
-            addToListEl(listEl, city);
-            citiesArr.unshift(city);
+            //if city is found, add to list and object, if not duplicate
+            if(!citiesArr.includes(city)){
+                citiesArr.push(city);
+            }
+            clearList(listEl)
+            generateList(listEl, city);
+            
             lon = data.coord.lon;
             lat = data.coord.lat;
             weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${openWeatherKEY}`;
@@ -53,8 +54,7 @@ const findCityWeather = (city) => {
             .then(response => updateWeatherResponse(response))
         )
         .catch(error => {
-            console.log(`Ran into an issue. Probably a bad city name`);
-            console.log(error);
+            console.log(`Ran into an issue. Probably a bad city name`, error);
         }
         );
 
@@ -63,7 +63,6 @@ const findCityWeather = (city) => {
 
 const updateWeatherResponse = (weather) => {
     openWeatherResponse = weather;
-    console.log(openWeatherResponse);
     updatePage();
 };
 
@@ -71,7 +70,7 @@ const updatePage = () => {
 
 };
 
-const addToListEl = (list, cityName) => {
+const generateList = (list) => {
 
     //keeps the list to 7 or fewer elements.
     if (list.children().length > 6) {
@@ -79,14 +78,14 @@ const addToListEl = (list, cityName) => {
         citiesArr.pop()
     }
 
-    let newLiEl = $('<li>')
+    for (const city of citiesArr) {
+        let newLiEl = $('<li>')
         .addClass('list-group-item')
-        .text(cityName)
-        .data(`city`, cityName);
+        .text(city)
+        .data(`city`, city);
 
-    list.prepend(newLiEl);
-
-    console.log(citiesArr)
+        list.prepend(newLiEl);
+    }
     
 };
 
@@ -98,12 +97,9 @@ const clearList = (list) => {
 };
 
 const init = () => {
-
     clearList(listEl);
-
-    for (const city of citiesArr) {
-        addToListEl(listEl, city);
-    }
+    generateList(listEl);
+    
 };
 
 init();
