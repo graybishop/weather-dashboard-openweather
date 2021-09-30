@@ -4,7 +4,7 @@ let listEl = $('#listPrev');
 let forecastHolderEl = $('#forecast-holder');
 const openWeatherKEY = `b182fedd8a80e5e98d46adb5bb99784e`;
 
-const citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`];
+const citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`, `PORTLAND`];
 
 let openWeatherResponse = {};
 let currentCitySearch = ``
@@ -164,6 +164,7 @@ const updatePage = (w) => {
 
     }
 
+    clearChildren(forecastHolderEl)
     for (let index = 1; index < 6; index++) {
         const element = w.daily[index];
         renderForecastCard(element.dt,element.weather[0].main,`${element.temp.day}℉`,`${element.wind_speed} mph`,`${element.humidity}%`,element.weather[0].icon)
