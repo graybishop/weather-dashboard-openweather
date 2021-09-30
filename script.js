@@ -4,7 +4,7 @@ let listEl = $('#listPrev');
 let forecastHolderEl = $('#forecast-holder');
 const openWeatherKEY = `b182fedd8a80e5e98d46adb5bb99784e`;
 
-const citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`, `PORTLAND`];
+const citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`, `PORTLAND`, `NEW YORK`];
 
 let openWeatherResponse = {};
 let currentCitySearch = ``
@@ -164,6 +164,7 @@ const updatePage = (w) => {
 
     }
 
+    //clear forecast cards and recreate them.
     clearChildren(forecastHolderEl)
     for (let index = 1; index < 6; index++) {
         const element = w.daily[index];
@@ -177,7 +178,7 @@ const updatePage = (w) => {
 const generateList = (list) => {
 
     //keeps list to 5 elements
-    if (citiesArr.length > 5) {
+    if (citiesArr.length > 7) {
         citiesArr.shift()
     }
 

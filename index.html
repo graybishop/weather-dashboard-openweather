@@ -14,32 +14,28 @@
     <title>Weather Dashboard!</title>
 </head>
 
-<body class="bg-dark">
-    <header class="container d-flex justify-content-center bg-dark text-light my-3">
+<body class="bg-light">
+    <header class="container-fluid d-flex justify-content-center mb-3 bg-primary">
         <h1>Weather Dashboard</h1>
     </header>
-    <main class="container bg-light text-dark my-3">
-        <section class="row bg-dark text-light">
+    <main class="container my-3">
+        <section class="row">
             <div class="col-sm-6">
-                <form class="my-3" id='search-form'>
-                    <div class="mb-3">
-                        <label for="citySearch" class="form-label form-control-lg">Find a City:</label>
-                        <input type="text" class="form-control" id="citySearch">
-                    </div>
-                    <div class="d-flex justify-content-center">
+                <h2 class="text-center bg-secondary p-3 rounded-2 text-light">Search for a City</h2>
+                <form class="m-3 d-flex" id='search-form'>
+                        <input type="text" placeholder="Orlando" class="form-control me-2" id="citySearch">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
                 </form>
-                <ul class="list-group my-3" id='listPrev'>
+                <ul class="list-group m-3" id='listPrev'>
                 </ul>
             </div>
             <div class="col-sm-6">
-                <h2>Current Weather</h2>
-                <div class="card my-3 text-dark">
+                <h2 class="text-center bg-secondary p-3 rounded-2 text-light">Current Weather</h2>
+                <div class="card my-3">
                     <div class="card-body" id='hero-card'>
-                        <h3 class="card-title text-dark">12/12 in Orlando</h3>
+                        <h3 class="card-title">12/12 in Orlando</h3>
                         <div class="d-flex flex-column">
-                            <div><img src="http://openweathermap.org/img/wn/01d@2x.png"></div>
+                            <div class="d-flex justify-content-center"><img src="http://openweathermap.org/img/wn/01d@2x.png"></div>
                             <p class="fs-5">It is currently 99℉, and it feels like 100℉</p>
                             <p class="fs-5">The wind speed is 99MPH</p>
                             <p class="fs-5">the UV index is .99(favorable, moderate, or severe)</p>
@@ -50,11 +46,11 @@
             </div>
         </section>
         <section class="row my-3 ">
-            <div class='col bg-light text-dark'>
-                <h2>5-Day Forecast</h2>
+            <div class='col'>
+                <h2 class="text-center bg-secondary p-3 rounded-2 text-light">5-Day Forecast</h2>
             </div>
         </section>
-        <section class="row bg-dark text-light" id='forecast-holder'>
+        <section class="row" id='forecast-holder'>
         </section>
 
     </main>
