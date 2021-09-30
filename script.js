@@ -1,6 +1,7 @@
 let formEl = $('#search-form');
 let searchEl = $('#citySearch');
 let listEl = $('#listPrev');
+let forecastHolderEl = $('#forecast-holder');
 const openWeatherKEY = `b182fedd8a80e5e98d46adb5bb99784e`;
 
 const citiesArr = [`SAN DIEGO`, `MIAMI`, `LOS ANGELES`, `ORLANDO`, `LAS VEGAS`];
@@ -48,7 +49,7 @@ const findCityWeather = (city) => {
             currentCitySearch = city
             lon = data.coord.lon;
             lat = data.coord.lat;
-            weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${openWeatherKEY}`;
+            weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=hourly,minutely,alerts&appid=${openWeatherKEY}`;
             return weatherURL;
         })
         .then(url => fetch(url)
@@ -75,15 +76,20 @@ const updatePage = (w) => {
         let hero = $(`#hero-card`)
         let today = new Date(w.current.dt * 1000)
 
+        //sets titile text
         hero.children().eq(0).text(`${today.getMonth()+1}/${today.getDate()} in ${currentCitySearch}`)
 
+        //sub items container
         let subItemsEl = hero.children().eq(1)
 
-        let newImgEl = $('<img>')
-        
-        //Weather icon
-        .attr("src", `http://openweathermap.org/img/wn/${w.current.weather[0].icon}@2x.png`)
+        //Weather icon section
+            //clears the old icon
         clearChildren(subItemsEl.children().eq(0))
+            //makes new icon element
+        let newImgEl = $('<img>')
+        .attr("src", `http://openweathermap.org/img/wn/${w.current.weather[0].icon}@2x.png`)
+
+        //clears placeholder text.
         subItemsEl.children().eq(0).append(newImgEl)
 
         //temps
@@ -111,6 +117,57 @@ const updatePage = (w) => {
         
         //humidity
         subItemsEl.children().eq(4).text(`The humidity is ${w.current.humidity}%.`)
+    }
+
+
+    const renderForecastCard = (date,weather, temp, windSpeed, humidity, icon) => {
+        // <div class="col-sm">
+        //         <div class="card my-3 text-dark">
+        //             <div class="card-body">
+        //                 <h2 class="card-title text-dark">daily.dt</h2>
+        //                 <div class="d-flex flex-column">
+        //                     <p>daily.weather</p>
+        //                     <p>daily.temp.max</p>
+        //                     <p>daily.wind.speed</p>
+        //                     <p>daily.humidity</p>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
+
+        let weatherArr =[weather, temp, windSpeed, humidity]
+        
+        //date string
+        let today = new Date(date * 1000)
+        // console.log(today)
+        let dateText =`${today.getMonth()+1}/${today.getDate()}`
+
+        //parent column
+        let colEl = $('<div>').addClass('col-sm').appendTo(forecastHolderEl)
+        //parent card container
+        let cardEl = $('<div>').addClass(`card my-3 text-dark`).appendTo(colEl)
+        //card image
+        $('<img>').attr("src", `http://openweathermap.org/img/wn/${icon}@2x.png`).addClass('align-self-center').appendTo(cardEl)
+        //card body
+        let cardBodyEl = $('<div>').addClass(`card-body`).appendTo(cardEl)
+        
+        
+        //card date title
+        $('<h2>').addClass(`card-title text-dark`).text(dateText).appendTo(cardBodyEl)
+
+        //container for information
+        let infoEl = $('<div>').appendTo(cardBodyEl)
+
+        for (const item of weatherArr) {
+            $('<p>').text(item).appendTo(infoEl)
+        }
+
+    }
+
+    for (let index = 1; index < 6; index++) {
+        const element = w.daily[index];
+        renderForecastCard(element.dt,element.weather[0].main,`${element.temp.day}℉`,`${element.wind_speed} mph`,`${element.humidity}%`,element.weather[0].icon)
+        
     }
 
     updateHeroCard()
