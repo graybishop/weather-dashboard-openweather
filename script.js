@@ -145,7 +145,7 @@ const updatePage = (w) => {
         //parent column
         let colEl = $('<div>').addClass('col-sm').appendTo(forecastHolderEl)
         //parent card container
-        let cardEl = $('<div>').addClass(`card my-3 text-dark`).appendTo(colEl)
+        let cardEl = $('<div>').addClass(`card mb-3 text-dark align-items-center`).appendTo(colEl)
         //card image
         $('<img>').attr("src", `http://openweathermap.org/img/wn/${icon}@2x.png`).addClass('align-self-center').appendTo(cardEl)
         //card body
@@ -153,7 +153,7 @@ const updatePage = (w) => {
         
         
         //card date title
-        $('<h2>').addClass(`card-title text-dark`).text(dateText).appendTo(cardBodyEl)
+        $('<h3>').addClass(`card-title text-dark`).text(dateText).appendTo(cardBodyEl)
 
         //container for information
         let infoEl = $('<div>').appendTo(cardBodyEl)
@@ -168,7 +168,13 @@ const updatePage = (w) => {
     clearChildren(forecastHolderEl)
     for (let index = 1; index < 6; index++) {
         const element = w.daily[index];
-        renderForecastCard(element.dt,element.weather[0].main,`${element.temp.day}℉`,`${element.wind_speed} mph`,`${element.humidity}%`,element.weather[0].icon)
+        renderForecastCard(
+            element.dt,
+            `Weather: ${element.weather[0].main}`,
+            `Temperature: ${element.temp.day}℉`,
+            `Wind speed: ${element.wind_speed} mph`,
+            `Humidity: ${element.humidity}%`,
+            element.weather[0].icon)
         
     }
 

@@ -14,23 +14,23 @@
     <title>Weather Dashboard!</title>
 </head>
 
-<body class="bg-light">
-    <header class="container-fluid d-flex justify-content-center mb-3 bg-primary">
+<body class="">
+    <header class="container-fluid d-flex justify-content-center mb-3 text-light">
         <h1>Weather Dashboard</h1>
     </header>
     <main class="container my-3">
         <section class="row">
             <div class="col-sm-6">
-                <h2 class="text-center bg-secondary p-3 rounded-2 text-light">Search for a City</h2>
+                <h2 class="text-center p-3 rounded-2 text-light">Search for a City</h2>
                 <form class="m-3 d-flex" id='search-form'>
                         <input type="text" placeholder="Orlando" class="form-control me-2" id="citySearch">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="">Submit</button>
                 </form>
-                <ul class="list-group m-3" id='listPrev'>
+                <ul class="list-group w-75 m-auto mb-3" id='listPrev'>
                 </ul>
             </div>
             <div class="col-sm-6">
-                <h2 class="text-center bg-secondary p-3 rounded-2 text-light">Current Weather</h2>
+                <h2 class="text-center p-3 rounded-2 text-light">Current Weather</h2>
                 <div class="card my-3">
                     <div class="card-body" id='hero-card'>
                         <h3 class="card-title">12/12 in Orlando</h3>
@@ -45,12 +45,12 @@
                 </div>
             </div>
         </section>
-        <section class="row my-3 ">
+        <section class="row mb-2">
             <div class='col'>
-                <h2 class="text-center bg-secondary p-3 rounded-2 text-light">5-Day Forecast</h2>
+                <h2 class="text-center p-3 rounded-2 text-light">5-Day Forecast</h2>
             </div>
         </section>
-        <section class="row" id='forecast-holder'>
+        <section class="row mb-2 px-3" id='forecast-holder'>
         </section>
 
     </main>
