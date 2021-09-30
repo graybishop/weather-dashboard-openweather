@@ -80,11 +80,37 @@ const updatePage = (w) => {
         let subItemsEl = hero.children().eq(1)
 
         let newImgEl = $('<img>')
-        .attr("src", `http://openweathermap.org/img/wn/${w.current.weather[0].icon}@2x.png`)
+        
         //Weather icon
+        .attr("src", `http://openweathermap.org/img/wn/${w.current.weather[0].icon}@2x.png`)
         clearChildren(subItemsEl.children().eq(0))
         subItemsEl.children().eq(0).append(newImgEl)
-        subItemsEl.children().eq(1).text(`It is currently ${w.current.temp}℉, and it feels like ${w.current.feels_like}℉`)
+
+        //temps
+        subItemsEl.children().eq(1).text(`It is currently ${w.current.temp}℉, and it feels like ${w.current.feels_like}℉.`)
+        
+        //wind speed
+        subItemsEl.children().eq(2).text(`The wind speed is ${w.current.wind_speed}mph.`)
+        
+        //UV Index
+        let currentUV = w.current.uvi
+        let uvBGColor = ''
+        let uvSpan = $('<span>').css('color', 'white').text(`${currentUV}`)
+
+        if (currentUV >7 ){
+            uvBGColor = 'red'
+        } else if ( currentUV < 3){
+            uvBGColor = 'green'
+        } else{
+            uvBGColor = 'orange'
+        }
+        uvSpan.css('backgroundColor', uvBGColor)
+        .css('padding', '.2rem .5rem')
+        .css('fontWeight', 'bold')
+        subItemsEl.children().eq(3).text(`The UV index is `).append(uvSpan)
+        
+        //humidity
+        subItemsEl.children().eq(4).text(`The humidity is ${w.current.humidity}%.`)
     }
 
     updateHeroCard()
