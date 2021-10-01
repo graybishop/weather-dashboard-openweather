@@ -200,10 +200,10 @@ const clearChildren = (element) => {
 };
 
 const init = () => {
+    retrieveData()
     clearChildren(listEl);
     generateList(listEl);
     findCityWeather(`ORLANDO`)
-    retrieveData()
 };
 
 const retrieveData = () => {
