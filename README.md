@@ -18,7 +18,7 @@ Link to [GitHub Pages Deployment](https://graybishop.github.io/weather-dashboard
 
 ## Screenshot
 
-![screenshot of website](images\weather-dashboard-screenshot.jpg)
+![screenshot of website](/images/weather-dashboard-screenshot.jpg)
 
 ## Features
 
