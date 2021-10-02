@@ -41,6 +41,7 @@ const findCityWeather = (city) => {
             if (!response.ok) {
                 throw Error(response.statusText);
             }
+            renderPlaceHolders()
             return response.json();
         })
         .then(data => {
@@ -73,8 +74,79 @@ const findCityWeather = (city) => {
 const updateWeatherResponse = (weather) => {
     openWeatherResponse = weather;
     console.log(weather)
-    updatePage(weather);
+    setTimeout(() => {
+        updatePage(weather)
+    }, 100);;
 };
+
+
+
+const renderPlaceHolders = () => {
+    let hero = $(`#hero-card`)
+    
+    const updateHeroCard = () => {
+        //sets title text
+        hero.children().eq(0).html(`<span class="placeholder col-9"></span>`).addClass(`placeholder-glow`)
+
+        //sub items container
+        let subItemsEl = hero.children().eq(1)
+
+        //Weather icon section
+            //clears the old icon
+        clearChildren(subItemsEl.children().eq(0))
+            //makes new icon element
+        let newImgEl = $('<img>')
+        .attr("src", `http://openweathermap.org/img/wn/01d@2x.png`)
+
+        //clears placeholder text.
+        subItemsEl.children().eq(0).append(newImgEl)
+
+        //temps
+        subItemsEl.children().eq(1).html(`<span class="placeholder col-8"></span>`).addClass(`placeholder-glow`)
+        
+        //wind speed
+        subItemsEl.children().eq(2).html(`<span class="placeholder col-9"></span>`).addClass(`placeholder-glow`)
+        
+        subItemsEl.children().eq(3).html(`<span class="placeholder col-6"></span>`).addClass(`placeholder-glow`)
+        
+        //humidity
+        subItemsEl.children().eq(4).html(`<span class="placeholder col-12"></span>`).addClass(`placeholder-glow`)
+    }
+
+    const renderForecastCard = () => {
+
+        //parent column
+        let colEl = $('<div>').addClass('col-sm').appendTo(forecastHolderEl)
+        //parent card container
+        let cardEl = $('<div>').addClass(`card mb-3 text-dark align-items-center h-100`).appendTo(colEl)
+        //card image
+        $('<img>').attr("src", `http://openweathermap.org/img/wn/01d@2x.png`).addClass('align-self-center').appendTo(cardEl)
+        //card body
+        let cardBodyEl = $('<div>').addClass(`card-body w-100`).appendTo(cardEl)
+        
+        //card date title
+        $('<h3>').addClass(`card-title text-dark placeholder-glow`).html(`<span class="placeholder col-12"></span>`).appendTo(cardBodyEl)
+
+        //container for information
+        let infoEl = $('<div>').appendTo(cardBodyEl).addClass('w-100')
+
+        for (let index = 0; index < 5; index++) {
+            $('<p>').html(`<span class="placeholder col-12"></span>`).addClass('placeholder-glow').appendTo(infoEl)
+        }
+
+    }
+
+    clearChildren(forecastHolderEl)
+
+    for (let index = 0; index < 5; index++) {
+        const element = index;
+        renderForecastCard()
+    }
+
+
+
+    updateHeroCard()
+}
 
 //updates page elements
 const updatePage = (w) => {
@@ -138,7 +210,7 @@ const updatePage = (w) => {
         //parent column
         let colEl = $('<div>').addClass('col-sm').appendTo(forecastHolderEl)
         //parent card container
-        let cardEl = $('<div>').addClass(`card mb-3 text-dark align-items-center`).appendTo(colEl)
+        let cardEl = $('<div>').addClass(`card mb-3 text-dark align-items-center h-100`).appendTo(colEl)
         //card image
         $('<img>').attr("src", `http://openweathermap.org/img/wn/${icon}@2x.png`).addClass('align-self-center').appendTo(cardEl)
         //card body
@@ -157,6 +229,7 @@ const updatePage = (w) => {
 
     }
 
+    //start processing here.
     //clear forecast cards and recreate them.
     clearChildren(forecastHolderEl)
     for (let index = 1; index < 6; index++) {
@@ -200,10 +273,11 @@ const clearChildren = (element) => {
 };
 
 const init = () => {
+    renderPlaceHolders()
     retrieveData()
     clearChildren(listEl);
     generateList(listEl);
-    findCityWeather(`ORLANDO`)
+    findCityWeather(citiesArr[citiesArr.length-1])
 };
 
 const retrieveData = () => {
@@ -211,10 +285,10 @@ const retrieveData = () => {
 
     
     if (localData) {
-        console.log('dataFound')
+        console.log('Local data found.')
         citiesArr = JSON.parse(localData)
     } else{
-        console.log('data not Found')
+        console.log('Local not found. Using default list.')
         storeData(citiesArr)
         
     }
@@ -228,3 +302,4 @@ init();
 // binding event listener
 formEl.submit(searchFromForm);
 listEl.on('click', 'li', searchFromList);
+// listEl.on('click', 'li', renderPlaceHolders);
