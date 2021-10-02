@@ -126,7 +126,7 @@ const renderPlaceHolders = () => {
         //parent column
         let colEl = $('<div>').addClass('col-sm').appendTo(forecastHolderEl)
         //parent card container
-        let cardEl = $('<div>').addClass(`card mb-3 text-dark align-items-center h-100`).appendTo(colEl)
+        let cardEl = $('<div>').addClass(`card mb-3 text-dark align-items-center h-100 shadow`).appendTo(colEl)
         //card image
         $('<img>').attr("src", `http://openweathermap.org/img/wn/01d@2x.png`).addClass('align-self-center').appendTo(cardEl)
         //card body
@@ -218,7 +218,7 @@ const updatePage = (w) => {
         //parent column
         let colEl = $('<div>').addClass('col-sm').appendTo(forecastHolderEl)
         //parent card container
-        let cardEl = $('<div>').addClass(`card mb-3 text-dark align-items-center h-100`).appendTo(colEl)
+        let cardEl = $('<div>').addClass(`card mb-3 text-dark align-items-center h-100 shadow`).appendTo(colEl)
         //card image
         $('<img>').attr("src", `http://openweathermap.org/img/wn/${icon}@2x.png`).addClass('align-self-center').appendTo(cardEl)
         //card body
