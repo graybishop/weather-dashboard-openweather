@@ -10,7 +10,6 @@ A weather dashboard utilizing the OpenWeather One Call API. This web app reaches
 
 -OpenWeather One Cal
 
-
 When they visits the page to ascertain the weather, the user can search for a city, or choose from recent searches. The data is then displayed on easy to digest cards for the user.
 
 ## Link
