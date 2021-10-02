@@ -28,6 +28,8 @@ const searchFromList = (event) => {
 //finds city coords then passes them to weather API for data. 
 const findCityWeather = (city) => {
     //fetch from first api lat and log
+    hideError()
+    renderPlaceHolders()
     let lat = `coord.lat`;
     let lon = `coord.lon`;
     let cityFinderURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openWeatherKEY}`;
@@ -39,9 +41,9 @@ const findCityWeather = (city) => {
     fetch(cityFinderURL)
         .then(response => {
             if (!response.ok) {
+                showError()
                 throw Error(response.statusText);
             }
-            renderPlaceHolders()
             return response.json();
         })
         .then(data => {
@@ -79,6 +81,12 @@ const updateWeatherResponse = (weather) => {
     }, 100);;
 };
 
+const showError = () => {
+    $('#error').show('fast')
+}
+const hideError = () => {
+    $('#error').hide()
+}
 
 
 const renderPlaceHolders = () => {
